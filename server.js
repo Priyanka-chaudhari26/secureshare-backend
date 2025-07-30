@@ -27,7 +27,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const serviceAccount = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "serviceAccountKey.json"), "utf8")
+  Buffer.from(process.env.GOOGLE_CREDENTIALS_BASE64, 'base64').toString('utf-8')
 );
 
 admin.initializeApp({
@@ -175,7 +175,7 @@ app.post("/share-file", async (req, res) => {
     try {
         const shareID = randomBytes(8).toString("hex");
 
-        const shareLink = `http://localhost:5500/share.html?sid=${shareID}&emailRequired=true`; // Adjust domain if deployed
+        const shareLink = `${process.env.FRONTEND_BASE_URL}/share.html?sid=${shareID}&emailRequired=true`; 
         console.log("shareLink",shareLink)
         // Save share info in Firebase
         const shareData = {
@@ -383,7 +383,7 @@ app.post("/generate-link", async (req, res) => {
     try {
         const shareID = randomBytes(8).toString("hex");
 
-        const shareLink = `http://localhost:5500/share.html?sid=${shareID}`;
+        const shareLink = `${process.env.FRONTEND_BASE_URL}/share.html?sid=${shareID}`;
 
         // Save share info in Firebase
         const shareData = {

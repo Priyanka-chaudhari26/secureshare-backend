@@ -27,7 +27,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const serviceAccount = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "serviceAccountKey.json"), "utf8")
+  Buffer.from(process.env.GOOGLE_CREDENTIALS_BASE64, 'base64').toString('utf-8')
 );
 
 admin.initializeApp({

@@ -45,6 +45,20 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+app.get('/firebase-config', (req, res) => {
+    
+    res.json({
+        apiKey: process.env.apiKey,
+        authDomain: process.env.authDomain,
+        databaseURL: process.env.databaseURL,
+        projectId: process.env.projectId,
+        storageBucket: process.env.storageBucket, 
+        messagingSenderId: process.env.messagingSenderId,
+        appId: process.env.appId,
+        measurementId: process.env.measurementId
+    });
+});
+
 app.post("/send-otp", async (req, res) => {
     const { email, uid } = req.body;
 
@@ -175,7 +189,7 @@ app.post("/share-file", async (req, res) => {
     try {
         const shareID = randomBytes(8).toString("hex");
 
-        const shareLink = `${process.env.FRONTEND_BASE_URL}/share.html?sid=${shareID}&emailRequired=true`; 
+        const shareLink = `${process.env.FRONTEND_BASE_URL}/pages/share.html?sid=${shareID}&emailRequired=true`; 
         console.log("shareLink",shareLink)
         // Save share info in Firebase
         const shareData = {
@@ -383,7 +397,7 @@ app.post("/generate-link", async (req, res) => {
     try {
         const shareID = randomBytes(8).toString("hex");
 
-        const shareLink = `${process.env.FRONTEND_BASE_URL}/share.html?sid=${shareID}`;
+        const shareLink = `${process.env.FRONTEND_BASE_URL}/pages/share.html?sid=${shareID}`;
 
         // Save share info in Firebase
         const shareData = {
